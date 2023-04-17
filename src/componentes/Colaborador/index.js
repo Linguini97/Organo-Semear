@@ -4,7 +4,7 @@ const Colaborador = (props) => {
 
     return(
         <div className='colaborador'>
-            <div className='cabecalho'> 
+            <div className='cabecalho' style={{backgroundColor: props.corSecundaria}} > 
                 <img src={props.imagem} alt='Foto Vinicius Fernandes' />
             </div>
             <div className='rodape'>
