@@ -1,9 +1,10 @@
 .formulario-container {
     display: flex;
+    flex-direction: column; 
     gap: 20px;
-    flex-wrap: wrap;
     justify-content: center;
     margin: 80px 50px;
+    align-items: center;
 
 }
 .formulario-container .formulario {
@@ -16,4 +17,22 @@
 .formulario-container .formulario h2 {
     font-weight: 400;
     font-size: 32px;
+}
+.opcao-formulario {
+    border: 2px solid #ccc;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin: 20px;
+}
+.opcao-formulario:hover {
+    background-color: #ebebeb;
+}
+.opcao-formulario.selecionada {
+    background-color: #4caf50;
+    color: #fff;
 }

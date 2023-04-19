@@ -6,6 +6,7 @@ import './Formulario.css'
 
 const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
 
+    const [opcaoSelecionada , setOpcaoSelecionada] = useState('colaborador')
     const [nome, setNome] = useState('')
     const [cargo, setCargo] = useState('')
     const [email, setEmail] = useState('')
@@ -30,10 +31,23 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
         setImagem('')
         setTime('')
 
+    };
+    const aoSelecionarOpcao = (opcao) =>{
+        setOpcaoSelecionada(opcao);
     }
 
     return (
         <section className="formulario-container">
+            <div className='opcoes-formulario'>
+                <button className={`opcao-formulario ${opcaoSelecionada === 'colaborador' ? 'selecionada' : ''}`}
+                onClick={() => aoSelecionarOpcao('colaborador')}>Colaborador</button>
+                <button className={`opcao-formulario ${opcaoSelecionada ==='time' ? 'selecionada':''}`}
+                onClick={() => aoSelecionarOpcao('time')}
+                >
+                Time
+                </button>
+            </div>
+            {opcaoSelecionada === 'colaborador' &&(
             <form className="formulario" onSubmit={aoSubmeter}>
                 <h2>Preencha os dados para criar o card do colaborador.</h2>
                 <CampoTexto
@@ -67,6 +81,8 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
                     aoAlterado={valor => setTime(valor)}/>
                 <Botao texto='Criar card' />
             </form>
+            )}
+            {opcaoSelecionada === 'time' &&(
             <form className="formulario" onSubmit={(evento) => {
                 evento.preventDefault()
                 aoCriarTime({ nome: nomeTime, cor: corTime })
@@ -88,6 +104,7 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
                     aoAlterado={valor => setCorTime(valor)}/>
                 <Botao texto='Criar Time' />
             </form>
+            )}
         </section>
     )
 }
