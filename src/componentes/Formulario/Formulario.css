@@ -20,19 +20,21 @@
 }
 .opcao-formulario {
     border: 2px solid #ccc;
-    background-color: #f7f7f7;
-    color: #333;
-    font-size: 24px;
-    font-weight: 400;
-    padding: 10px;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-    margin: 20px;
+    background-color: #faab42;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 32px;
+    color: #fff;
+    margin: 32px 15px;
+
 }
 .opcao-formulario:hover {
-    background-color: #ebebeb;
+    background-color: #9c5c2c;
 }
 .opcao-formulario.selecionada {
-    background-color: #4caf50;
+    background-color: #83933c;
     color: #fff;
 }

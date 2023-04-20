@@ -7,24 +7,24 @@ const Rodape = () => {
             <section>
                 <ul>
                     <li>
-                    <a href="https://www.facebook.com/" target="_blank">
+                    <a href="https://www.facebook.com/isemear/?locale=pt_BR" target="_blank">
                         <img src="/imagens/fb.png" alt="Logo Facebook" />
                     </a>
                     </li>
                     <li>
-                    <a href="https://twitter.com/" target="_blank">
+                    <a href="https://twitter.com/instituto2" target="_blank">
                         <img src="/imagens/tw.png" alt="Logo Twiter" />
                     </a>
                     </li>
                     <li>
-                    <a href="https://www.instagram.com/" target="_blank">
+                    <a href="https://www.instagram.com/isemearoficial/?hl=pt-br" target="_blank">
                         <img src="/imagens/ig.png" alt="Logo Instagram" />
                     </a>
                     </li>
                 </ul>
             </section>
-            <section>
-                <img src="/imagens/logo.png" alt="Logo Organograma"/>
+            <section className='imagem-logo'>
+                <img src="/imagens/logo-semear.png" alt="Logo Semear"/>
             </section>
             <section>
                 <p>Desenvolvido para o Instituto Semear</p>
