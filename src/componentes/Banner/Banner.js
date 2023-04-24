@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+
+
 import './Banner.css'
 
 function Banner(){
@@ -5,7 +8,9 @@ function Banner(){
     return(
         <header className="banner">
             <div className='superior'>
-                <img src="/imagens/logo-semear.png" alt="Banner principal do Organograma" ></img> 
+            <Link to='/'>
+                <img src="/imagens/logo-semear.png" alt="Banner principal do Organograma" />
+            </Link>
                 <h1>Organo</h1>
             </div>
             <div className='inferios'>
