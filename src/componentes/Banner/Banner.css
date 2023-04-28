@@ -17,7 +17,7 @@
 }
 
 .superior img {
-  width: 350px;
+  width: 250px;
   height: 120px;
   margin-right: 10px;
 }
@@ -33,8 +33,8 @@
 .inferios h2 {
   text-align: center;
   color: #fff;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 48px;
-  margin: 10%;
+  margin: 10% 0;
   width: 100%;
 }

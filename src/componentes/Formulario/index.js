@@ -104,9 +104,10 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
                     aoAlterado={valor => setCorTime(valor)}/>
                 <Botao texto='Criar Time' />
             </form>
-            )}
+            )}    
         </section>
     )
 }
+
 
 export default Formulario
