@@ -12,11 +12,11 @@
     box-shadow: 7px 7px 15px rgba(0, 0, 0, 0.08);
     border-radius: 20px;
     padding: 36px 64px;
-    width: 40%;
+    width: 50%;
 }
 .formulario-container .formulario h2 {
     font-weight: 400;
-    font-size: 32px;
+    font-size: 28px;
     text-align: center;
 }
 .campo-texto{
@@ -35,6 +35,7 @@
     font-size: 16px;
     padding: 16px;
     box-sizing: border-box;
+    border-radius: 15px;
 }
 .container-botao{
     display: flex;
@@ -43,16 +44,24 @@
 }
 
 .container-botao .botao {
-    background-color: #faab42;
-    border-radius: 10px;
+    background-color: #9c5c2c;
+    border-radius: 15px;
     font-weight: 700;
     font-size: 18px;
-    padding: 32px;
+    padding: 24px 32px;
     border: none;
     cursor: pointer;
     color: #fff;
-    margin: 32px 0;
+    margin: 24px 0;
 }
-.container-botao .botao:hover{
-    color: #9c5c2c;
-} 
+.container-erro {
+    margin-top: 10px;
+    background-color: #ffe6e6;
+    border: 1px solid #ff9999;
+    border-radius: 25px;
+    padding: 5px 10px;
+    text-align: center;
+}
+.mensagem-erro {
+    color: #ff0000;
+}

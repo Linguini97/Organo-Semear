@@ -24,7 +24,7 @@ const Rodape = () => {
                 </ul>
             </section>
             <section className='imagem-logo'>
-                <img src="/imagens/logo-semear.png" alt="Logo Semear"/>
+                <img src="/imagens/logo_branco.png" alt="Logo Semear"/>
             </section>
             <section>
                 <p>Desenvolvido para o Instituto Semear</p>

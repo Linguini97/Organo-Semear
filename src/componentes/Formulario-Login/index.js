@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios';
 import { useNavigate  } from 'react-router-dom';
-
+import { ExclamationTriangleFill } from 'react-bootstrap-icons';
 import './FormularioLogin.css'
 
 const FormularioLogin =() =>{
@@ -9,6 +9,7 @@ const FormularioLogin =() =>{
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [showError, setShowError] = useState(false);
     const navigate  = useNavigate();
 
     const handleUsernameChange = (evento) =>{
@@ -16,12 +17,19 @@ const FormularioLogin =() =>{
     };
     const handlePasswordChange = (evento) => {
         setPassword(evento.target.value)
-    }
+    };
+    const showErrorMessage  = (message)=>{
+        setShowError(true);
+        setTimeout(() =>{
+            setShowError(false);
+        }, 5000);
+        setError(message)
+    };
     const AoSubmeterlogin = async (evento) => {
         evento.preventDefault();
 
         if (!username || !password){
-            setError('Por favor preencha todos os campos');
+            showErrorMessage('Por favor preencha todos os campos');
             return;
         }
         try {
@@ -43,7 +51,7 @@ const FormularioLogin =() =>{
     return(
         <section className='formulario-container'>
             <form className='formulario' onSubmit={AoSubmeterlogin}>
-            <h2>Por favor, preencha os campos abaixo para acessar a sua conta:</h2>
+            <h2>Faça o Login para cadastrar um colaborador:</h2>
 
                 <div className="campo-texto">
                     <label htmlFor='username'>Usuário:</label>
@@ -67,8 +75,13 @@ const FormularioLogin =() =>{
                     </div>
                     <div className='container-botao'>
                     <button className='botao' type='submit'>Entrar</button>
-                    {error && <p>{error}</p>} 
                     </div>
+                    {showError && 
+                        <div className='container-erro'>
+                                    <ExclamationTriangleFill className="bi flex-shrink-0 me-2" role="img" aria-label="Danger:" />
+                            <p className='mensagem-erro'>{error}</p>
+                        </div>
+                    }                   
                 </form>
         </section>
     )
