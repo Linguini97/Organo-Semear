@@ -14,22 +14,29 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
     const [time, setTime] = useState('')
     const [nomeTime, setNomeTime] = useState('')
     const [corTime, setCorTime] = useState('')
+    const [diretoria , setDiretoria] = useState('')
+    const [contato , setContato] = useState('')
+    const [pronome, setPronome] = useState('')
 
     const aoSubmeter = (evento) => {
         evento.preventDefault()
-        console.log('form enviado', nome, cargo, email, imagem, time )
+        console.log('form enviado', nome, cargo, email, imagem, time,contato, pronome)
         aoCadastrar({
             nome,
             cargo,
             email,
             imagem,
-            time
+            time, 
+            contato,
+            pronome
         })
         setNome('')
         setEmail('')
         setCargo('')
         setImagem('')
         setTime('')
+        setContato('')
+        setPronome('')
 
     };
     const aoSelecionarOpcao = (opcao) =>{
@@ -53,21 +60,33 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
                 <CampoTexto
                     obrigatorio={true}
                     label='Nome'
-                    placeholder='Digite seu nome '
+                    placeholder='Digite o nome do colaborador '
                     valor={nome}
                     aoAlterado={valor => setNome(valor)}/>
                 <CampoTexto
                     obrigatorio={true}
+                    label='Pronome'
+                    placeholder='Digite o pronome do colaborador '
+                    valor={pronome}
+                    aoAlterado={valor => setPronome(valor)}/>
+                <CampoTexto
+                    obrigatorio={true}
                     label='Cargo' 
-                    placeholder='Digite seu cargo '
+                    placeholder='Digite o cargo do colaborador'
                     valor={cargo}
                     aoAlterado={valor => setCargo(valor)}/>
                 <CampoTexto
                     obrigatorio={true}
                     label='E-mail' 
-                    placeholder='Digite seu E-mail '
+                    placeholder='Digite o E-mail do colaborador'
                     valor={email}
                     aoAlterado={valor => setEmail(valor)}/>
+                <CampoTexto
+                    obrigatorio={true}
+                    label='Contato'
+                    placeholder='Digite o contato do colaborador '
+                    valor={contato}
+                    aoAlterado={valor => setContato(valor)}/>
                 <CampoTexto 
                     label='Imagem' 
                     placeholder='Informe o endereço da imagem '
@@ -102,6 +121,12 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
                     placeholder='Digite sua cor'
                     valor={corTime}
                     aoAlterado={valor => setCorTime(valor)}/>
+                    <CampoTexto
+                    obrigatorio={true}
+                    label='Diretoria' 
+                    placeholder='Digite a diretoria que a área pertence'
+                    valor={diretoria}
+                    aoAlterado={valor => setDiretoria(valor)}/>
                 <Botao texto='Criar Time' />
             </form>
             )}    

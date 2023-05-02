@@ -11,7 +11,7 @@ const Time = ({ colaboradores, nome, corPrimaria, corSecundaria, aoDeletar, muda
                 <h3 style={{ borderColor: corPrimaria }}>{nome}</h3>
                 <div className='colaboradores'>
                     {colaboradores.map(colaborador => {
-                        return <Colaborador corDeFundo={corPrimaria} key={colaborador.nome} nome={colaborador.nome} cargo={colaborador.cargo} email={colaborador.email} imagem={colaborador.imagem} aoDeletar={aoDeletar} />
+                        return <Colaborador corDeFundo={corPrimaria} key={colaborador.nome} nome={colaborador.nome} pronome={colaborador.pronome} contato={colaborador.contato} cargo={colaborador.cargo} email={colaborador.email} imagem={colaborador.imagem} aoDeletar={aoDeletar} />
                     })}
                 </div>
             </section>
