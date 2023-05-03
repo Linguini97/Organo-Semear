@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Botao from '../Botao'
 import CampoTexto from '../CampoTexto'
 import ListaSuspensa from '../ListaSuspensa'
@@ -14,10 +14,16 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
     const [time, setTime] = useState('')
     const [nomeTime, setNomeTime] = useState('')
     const [corTime, setCorTime] = useState('')
-    const [diretoria , setDiretoria] = useState('')
     const [contato , setContato] = useState('')
     const [pronome, setPronome] = useState('')
+    const [diretoriaSelecionada, setDiretoriaSelecionada] = useState('')
+    const [nomeDiretoria, setNomeDiretoria] = useState('')
+    const [diretorias, setDiretorias] = useState([]);
 
+
+    const aoCriarDiretoria = (novaDiretoria) =>{
+        setDiretorias([... diretorias, novaDiretoria])
+    };
     const aoSubmeter = (evento) => {
         evento.preventDefault()
         console.log('form enviado', nome, cargo, email, imagem, time,contato, pronome)
@@ -52,6 +58,11 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
                 onClick={() => aoSelecionarOpcao('time')}
                 >
                 Time
+                </button>
+                <button className={`opcao-formulario ${opcaoSelecionada ==='diretoria' ? 'selecionada':''}`}
+                onClick={() => aoSelecionarOpcao('diretoria')}
+                >
+                Diretoria
                 </button>
             </div>
             {opcaoSelecionada === 'colaborador' &&(
@@ -102,34 +113,56 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
             </form>
             )}
             {opcaoSelecionada === 'time' &&(
-            <form className="formulario" onSubmit={(evento) => {
-                evento.preventDefault()
-                aoCriarTime({ nome: nomeTime, cor: corTime })
-                setNomeTime('')
-                setCorTime('')
-            }}>
-                <h2>Preencha os dados para criar um novo time.</h2>
-                <CampoTexto
-                    obrigatorio={true}
-                    label='Nome'
-                    placeholder='Digite o nome do time'
-                    valor={nomeTime}
-                    aoAlterado={valor => setNomeTime(valor)}/>
-                <CampoTexto
-                    obrigatorio={true}
-                    label='Cor' 
-                    placeholder='Digite sua cor'
-                    valor={corTime}
-                    aoAlterado={valor => setCorTime(valor)}/>
+            <div className='formulario-container'>
+                <form className="formulario" onSubmit={(evento) => {
+                    evento.preventDefault()
+                    aoCriarTime({ nome: nomeTime, cor: corTime , diretoria: diretoriaSelecionada })
+                    setNomeTime('')
+                    setCorTime('')
+                    setDiretoriaSelecionada('')
+                }}>
+                    <h2>Preencha os dados para criar um novo time.</h2>
                     <CampoTexto
-                    obrigatorio={true}
-                    label='Diretoria' 
-                    placeholder='Digite a diretoria que a área pertence'
-                    valor={diretoria}
-                    aoAlterado={valor => setDiretoria(valor)}/>
-                <Botao texto='Criar Time' />
-            </form>
-            )}    
+                        obrigatorio={true}
+                        label='Nome'
+                        placeholder='Digite o nome do time'
+                        valor={nomeTime}
+                        aoAlterado={valor => setNomeTime(valor)}/>
+                    <CampoTexto
+                        obrigatorio={true}
+                        label='Cor' 
+                        placeholder='Digite sua cor'
+                        valor={corTime}
+                        aoAlterado={valor => setCorTime(valor)}/>
+                        <ListaSuspensa
+                        obrigatorio={true}
+                        label='Diretoria' 
+                        items ={diretorias}
+                        valor={diretoriaSelecionada}
+                        aoAlterado={valor => setDiretoriaSelecionada(valor)}/>
+                    <Botao texto='Criar Time' />
+                </form>
+            </div> 
+            )}
+            {opcaoSelecionada === 'diretoria' &&(
+            <div className='formulario-container'>
+                <form className='formulario' onSubmit={(evento)=>{
+                    evento.preventDefault();
+                    aoCriarDiretoria( nomeDiretoria);
+                    setNomeDiretoria('')
+                }}>
+                    <h2>Criar Diretoria</h2>
+                        <CampoTexto
+                        obrigatorio={true}
+                        label='Nome da Diretoria'
+                        placeholder='Digite o nome da diretoria'
+                        valor={nomeDiretoria}
+                        aoAlterado={valor => setNomeDiretoria(valor)}
+                        />
+                    <Botao texto='Criar diretoria' />
+                </form>
+            </div>    
+            )}
         </section>
     )
 }
