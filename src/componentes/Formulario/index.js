@@ -4,7 +4,7 @@ import CampoTexto from '../CampoTexto'
 import ListaSuspensa from '../ListaSuspensa'
 import './Formulario.css'
 
-const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
+const Formulario = ({ aoCadastrar, times, aoCriarTime, niveis }) => {
 
     const [opcaoSelecionada , setOpcaoSelecionada] = useState('colaborador')
     const [nome, setNome] = useState('')
@@ -12,6 +12,7 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
     const [email, setEmail] = useState('')
     const [imagem, setImagem] = useState('')
     const [time, setTime] = useState('')
+    const [nivel, setNivel] = useState('')
     const [nomeTime, setNomeTime] = useState('')
     const [corTime, setCorTime] = useState('')
     const [contato , setContato] = useState('')
@@ -26,10 +27,11 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
     };
     const aoSubmeter = (evento) => {
         evento.preventDefault()
-        console.log('form enviado', nome, cargo, email, imagem, time,contato, pronome)
+        console.log('form enviado', nome, cargo, nivel, email, imagem, time,contato, pronome)
         aoCadastrar({
             nome,
             cargo,
+            nivel,
             email,
             imagem,
             time, 
@@ -38,6 +40,7 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
         })
         setNome('')
         setEmail('')
+        setNivel('')
         setCargo('')
         setImagem('')
         setTime('')
@@ -86,6 +89,12 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime }) => {
                     placeholder='Digite o cargo do colaborador'
                     valor={cargo}
                     aoAlterado={valor => setCargo(valor)}/>
+                <ListaSuspensa 
+                    obrigatorio={true}
+                    label='Nível hierárquico'
+                    items={niveis} 
+                    valor={nivel}
+                    aoAlterado={valor => setNivel(valor)}/>
                 <CampoTexto
                     obrigatorio={true}
                     label='E-mail' 

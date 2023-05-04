@@ -42,6 +42,21 @@ function Cadastro() {
     }
   ])
 
+  const [niveis, setNiveis] = useState([
+    {
+      nome: 'Líder'
+    },
+    {
+      nome:'Sênior'
+    },
+    {
+      nome: 'Pleno'
+    },
+    {
+      nome:'Júnior'
+    }
+  ])
+
   const [colaboradores , setColaboradores] = useState([])
   
   function deletarColaborador(nome){
@@ -66,6 +81,7 @@ function Cadastro() {
       <Formulario 
         aoCriarTime={cadastrarTime} 
         times={times.map(time => time.nome)} 
+        niveis={niveis.map(nivel => nivel.nome)}
         aoCadastrar={colaborador => setColaboradores([...colaboradores, colaborador])} />
         {times.map(time => <Time 
         mudarCor={mudarCorDoTime}
