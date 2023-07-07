@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect  } from 'react'
+import axios from 'axios';
 import Botao from '../Botao'
 import CampoTexto from '../CampoTexto'
 import ListaSuspensa from '../ListaSuspensa'
 import './Formulario.css'
 
-const Formulario = ({ aoCadastrar, times, aoCriarTime, niveis }) => {
+const Formulario = ({ aoCadastrar, times, niveis }) => {
 
     const [opcaoSelecionada , setOpcaoSelecionada] = useState('colaborador')
     const [nome, setNome] = useState('')
@@ -19,38 +20,104 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime, niveis }) => {
     const [pronome, setPronome] = useState('')
     const [diretoriaSelecionada, setDiretoriaSelecionada] = useState('')
     const [nomeDiretoria, setNomeDiretoria] = useState('')
-    const [diretorias, setDiretorias] = useState([]);
+    const [nomesDiretorias, setNomesDiretorias] = useState([]);
+    const [nomesTimes, setNomesTimes] = useState([]);
 
-
-    const aoCriarDiretoria = (novaDiretoria) =>{
-        setDiretorias([... diretorias, novaDiretoria])
+    const aoCriarDiretoria = (nomeDiretoria) =>{
+        const url = 'http://localhost:3001/diretoria';
+        const dados = {
+            nome: nomeDiretoria
+        };
+        axios.post(url,dados).then((response)=>{
+            console.log(response.data);
+            console.log('Diretoria cadastrada com sucesso!')
+        })
+        .catch((error)=>{
+            console.log('Erro ao cadastrar diretoria: ', error)
+        });
     };
+    const buscarDiretorias = () =>{
+        axios.get('http://localhost:3001/diretoria').then(response => {
+            const nomes = response.data.map(diretoria => diretoria.nome);
+            setNomesDiretorias(nomes);            
+        })
+        .catch(error => {
+            console.log('Erro ao buscar diretorias: ', error);
+        });
+    };
+    useEffect(() => {
+        buscarDiretorias();
+    }, []);
+    const aoCriarTime = (nomeTime, corTime, nomeDiretoria) => {
+        const url ='http://localhost:3001/time';
+        const dados = {
+            nome: nomeTime,
+            cor: corTime,
+            diretoria_nome: nomeDiretoria
+        };
+        axios.post(url, dados).then((response)=>{
+            console.log(response.data);
+            console.log('Time cadastrado com sucesso!')
+        })
+        .catch(error =>{
+            console.log('Erro ao cadastrar time: ', error)
+        });
+    };
+    const buscarTimes = () =>{
+        axios.get('http://localhost:3001/time').then(response => {
+            const nomes = response.data.map(time => time.nome);
+            setNomesTimes(nomes);            
+        })
+        .catch(error => {
+            console.log('Erro ao buscar times: ', error);
+        });
+    };
+    useEffect(() => {
+        buscarTimes();
+    }, []);
     const aoSubmeter = (evento) => {
         evento.preventDefault()
-        console.log('form enviado', nome, cargo, nivel, email, imagem, time,contato, pronome)
-        aoCadastrar({
-            nome,
-            cargo,
-            nivel,
-            email,
-            imagem,
-            time, 
-            contato,
-            pronome
-        })
-        setNome('')
-        setEmail('')
-        setNivel('')
-        setCargo('')
-        setImagem('')
-        setTime('')
-        setContato('')
-        setPronome('')
+        
+        let dados = {};
+        let url;
 
-    };
+        if(opcaoSelecionada  === 'colaborador'){
+            url = 'http://localhost:3001/colaborador';
+            dados = {
+                nome: nome,
+                cargo: cargo,
+                nivel: nivel,
+                imagem: imagem,
+                email: email,
+                pronome: pronome,
+                contato: contato,
+                time: time
+            }
+        }
+        axios.post(url, dados).then((response) => {
+            console.log(response.data);
+            console.log('Dados recebidos com sucesso !');
+            limparFormularioColaborador();
+        })
+        .catch((error) =>{
+            console.error('Erro ao enviar dados: ', error);
+        });
+        };
+
     const aoSelecionarOpcao = (opcao) =>{
         setOpcaoSelecionada(opcao);
     }
+
+    const limparFormularioColaborador = () => {
+        setNome('');
+        setCargo('');
+        setNivel('');
+        setImagem('');
+        setEmail('');
+        setPronome('');
+        setContato('');
+        setTime('');
+    };
 
     return (
         <section className="formulario-container">
@@ -77,7 +144,7 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime, niveis }) => {
                     placeholder='Digite o nome do colaborador '
                     valor={nome}
                     aoAlterado={valor => setNome(valor)}/>
-                <CampoTexto
+                    <CampoTexto
                     obrigatorio={true}
                     label='Pronome'
                     placeholder='Digite o pronome do colaborador '
@@ -115,7 +182,7 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime, niveis }) => {
                 <ListaSuspensa 
                     obrigatorio={true}
                     label='Times'
-                    items={times} 
+                    items={nomesTimes}
                     valor={time}
                     aoAlterado={valor => setTime(valor)}/>
                 <Botao texto='Criar card' />
@@ -123,12 +190,12 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime, niveis }) => {
             )}
             {opcaoSelecionada === 'time' &&(
             <div className='formulario-container'>
-                <form className="formulario" onSubmit={(evento) => {
+            <form className="formulario" onSubmit={(evento) => {
                     evento.preventDefault()
-                    aoCriarTime({ nome: nomeTime, cor: corTime , diretoria: diretoriaSelecionada })
-                    setNomeTime('')
-                    setCorTime('')
-                    setDiretoriaSelecionada('')
+                    aoCriarTime(nomeTime,corTime ,diretoriaSelecionada);
+                    setNomeTime('');
+                    setCorTime('');
+                    setDiretoriaSelecionada('');
                 }}>
                     <h2>Preencha os dados para criar um novo time.</h2>
                     <CampoTexto
@@ -146,7 +213,7 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime, niveis }) => {
                         <ListaSuspensa
                         obrigatorio={true}
                         label='Diretoria' 
-                        items ={diretorias}
+                        items={nomesDiretorias}
                         valor={diretoriaSelecionada}
                         aoAlterado={valor => setDiretoriaSelecionada(valor)}/>
                     <Botao texto='Criar Time' />
@@ -178,3 +245,4 @@ const Formulario = ({ aoCadastrar, times, aoCriarTime, niveis }) => {
 
 
 export default Formulario
+

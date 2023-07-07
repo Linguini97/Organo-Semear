@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios';
 import { useNavigate  } from 'react-router-dom';
-import { ExclamationTriangleFill } from 'react-bootstrap-icons';
+import { ExclamationTriangleFill, ShopWindow } from 'react-bootstrap-icons';
 import './FormularioLogin.css'
 
 const FormularioLogin =() =>{
@@ -10,6 +10,7 @@ const FormularioLogin =() =>{
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [showError, setShowError] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
     const navigate  = useNavigate();
 
     const handleUsernameChange = (evento) =>{
@@ -33,20 +34,26 @@ const FormularioLogin =() =>{
             return;
         }
         try {
-            const response = await axios.post('', {
+            const response = await axios.post('http://localhost:3001/Usuario', {
                 username,
-                password
-            });
-            navigate.push('/cadastro');
+                password,
+            })
+            const {data} = response;
+            if (data.msg === 'Usuário Logado com sucesso'){
+                localStorage.setItem('token', data.token);
+                setLoggedIn(true);
+            } else {
+                showErrorMessage('Usuário ou senha incorretos');
+            }
         } catch (error){
             console.log(error);
-            if (error.response && error.response.status === 401){
-                alert('Login ou senha incorretos');
-            }else {
-                alert('Houve um erro ao realizar o Login. Tente novamente mais tarde')
-            }
+            alert('Houve um erro ao realizar o Login. Tente novamente mais tarde')   
         }
 
+    };
+    if(loggedIn){
+        navigate("/cadastro");
+        return null;
     }
     return(
         <section className='formulario-container'>

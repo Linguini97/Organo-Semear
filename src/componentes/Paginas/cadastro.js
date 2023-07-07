@@ -1,6 +1,6 @@
-import { useState } from 'react';
-
+import { useState , useEffect  } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 import Banner from '../Banner/Banner';
 import Formulario from '../Formulario';
 import Rodape from '../Rodape';
@@ -9,38 +9,7 @@ import Time from '../Time';
 
 function Cadastro() {
 
-  const [times, setTimes] = useState ([
-    {
-      id: uuidv4(),
-      nome: 'Diretor Executivo',
-      corPrimaria: '#57c278',
-      corSecundaria: '#D9F7E9',
-    },
-    {
-      id: uuidv4(),
-      nome: 'Diretor',
-      corPrimaria: '#82CFFA',
-      corSecundaria: '#E8F8FF',
-    },
-    {
-      id: uuidv4(),
-      nome: 'Experiência',
-      corPrimaria: '#A6D157',
-      corSecundaria: '#F0F8E2',
-    },
-    {
-      id: uuidv4(),
-      nome: 'Gratuidade',
-      corPrimaria: '#E06B69',
-      corSecundaria: '#FDE7E8',
-    },
-    {
-      id: uuidv4(),
-      nome: 'I.M',
-      corPrimaria: '#DB6EBF',
-      corSecundaria: '#FAE9F5',
-    }
-  ])
+  const [times, setTimes] = useState ([])
 
   const [niveis, setNiveis] = useState([
     {
@@ -58,7 +27,21 @@ function Cadastro() {
   ])
 
   const [colaboradores , setColaboradores] = useState([])
-  
+  const [colaboradorEditando, setColaboradorEditando] = useState(null)
+  const navigate  = useNavigate();
+
+  useEffect(() =>{
+    const token = localStorage.getItem('token');
+
+    if(!token){
+      navigate('/login')
+    }
+  },[navigate])
+
+  function editarColaborador(nome, nivel) {
+    setColaboradores(colaboradores.filter(colaborador => colaborador.nome!== nome || colaborador.nivel !== nivel));
+}
+
   function deletarColaborador(nome){
     setColaboradores(colaboradores.filter(colaborador => colaborador.nome !== nome))        
   }
@@ -75,6 +58,8 @@ function Cadastro() {
   function cadastrarTime(novoTime){
     setTimes([...times, {...novoTime, id: uuidv4()}])
   }
+
+  
   return (
     <div className="App">
       <Banner/>
@@ -91,7 +76,8 @@ function Cadastro() {
         corSecundaria = {time.corSecundaria}
         colaboradores = {colaboradores.filter(colaborador => colaborador.time === time.nome)}
         aoDeletar={deletarColaborador}
-      />)}
+        aoEditar = {editarColaborador }
+        />)}
       <Rodape />
 
 
