@@ -5,6 +5,7 @@ import Banner from '../Banner/Banner';
 import Formulario from '../Formulario';
 import Rodape from '../Rodape';
 import Time from '../Time';
+import axios from 'axios';
 
 
 function Cadastro() {
@@ -27,6 +28,7 @@ function Cadastro() {
   ])
 
   const [colaboradores , setColaboradores] = useState([])
+  const [nomesTimes, setNomesTimes] = useState([])
   const [colaboradorEditando, setColaboradorEditando] = useState(null)
   const navigate  = useNavigate();
 
@@ -38,12 +40,89 @@ function Cadastro() {
     }
   },[navigate])
 
-  function editarColaborador(nome, nivel) {
-    setColaboradores(colaboradores.filter(colaborador => colaborador.nome!== nome || colaborador.nivel !== nivel));
-}
+  const buscarTimes = () =>{
+    axios.get('http://localhost:3001/time').then(response => {
+        const nomes = response.data.map(time => time.nome);
+        setNomesTimes(nomes);            
+    })
+    .catch(error => {
+        console.log('Erro ao buscar times: ', error);
+    });
+};
+useEffect(() => {
+    buscarTimes();
+}, []);    
+const buscaColaboradores = () =>{
+  axios.get('http://localhost:3001/colaborador').then(response =>{
+      const colaboradores = response.data;
+
+      colaboradores.forEach(colaborador => {
+          const {nome, cargo, nivel,imagem,email,pronome,contato,time} = colaborador;
+          const nomeColaborador = nome;
+          const cargoColaborador = cargo;
+          const nivelColaborador = nivel;
+          const imagemColaborador = imagem;
+          const emailColaborador = email;
+          const pronomeColaborador = pronome;
+          const contatoColaborador = contato;
+          const timeColaborador = time;
+
+      })
+  })
+  .catch(error => {
+      console.log('Erro ao buscar colaborador: ', error)
+  });
+};
+useEffect(()=>{
+  buscaColaboradores();
+},[]);
+
+  function editarColaborador(nome, cargo, nivel,imagem,email,pronome,contato,time) {
+    setColaboradorEditando(nome);
+    const colaboradorEditado = {
+      nome: nome,
+      cargo: cargo,
+      nivel: nivel,
+      imagem: imagem,
+      email: email,
+      pronome: pronome,
+      contato: contato,
+      time:time
+    };
+    axios.put(`http://localhost:3001/colaborador/${nome}`, colaboradorEditado)
+    .then(response =>{
+      console.log('Colaborado atualizado: ',response.data);
+      const colaboradoresAtualizados = colaboradores.map(colaborador =>{
+        if(colaborador.nome === nome){
+          return{
+          ...colaborador,
+          cargo:cargo,
+          nivel:nivel,
+          imagem:imagem,
+          email: email,
+          pronome: pronome,
+          contato:contato,
+          time:time
+          };
+        }else{
+          return colaborador;
+          }
+        });
+        setColaboradores(colaboradoresAtualizados)
+      }).catch(error=>{
+        console.log('Erro ao atualizar colaborador: ',error)
+      });
+
+      }
+
 
   function deletarColaborador(nome){
-    setColaboradores(colaboradores.filter(colaborador => colaborador.nome !== nome))        
+    axios.delete(`http://localhost:3001/colaborador/${nome}`).then(response =>{
+      console.log(response.data);
+    })
+    .catch(error =>{
+      console.log(error)
+    })
   }
 
   function mudarCorDoTime(cor, nome){
@@ -64,20 +143,10 @@ function Cadastro() {
     <div className="App">
       <Banner/>
       <Formulario 
-        aoCriarTime={cadastrarTime} 
-        times={times.map(time => time.nome)} 
         niveis={niveis.map(nivel => nivel.nome)}
-        aoCadastrar={colaborador => setColaboradores([...colaboradores, colaborador])} />
-        {times.map(time => <Time 
-        mudarCor={mudarCorDoTime}
-        key={time.nome} 
-        nome= {time.nome} 
-        corPrimaria = {time.corPrimaria} 
-        corSecundaria = {time.corSecundaria}
-        colaboradores = {colaboradores.filter(colaborador => colaborador.time === time.nome)}
         aoDeletar={deletarColaborador}
         aoEditar = {editarColaborador }
-        />)}
+        />)
       <Rodape />
 
 

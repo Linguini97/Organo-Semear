@@ -3,6 +3,7 @@ import Rodape from "../Rodape"
 import Time from "../Time"
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import ListaColaboradores from "../ListaColaboradores";
 
 
 function Home() {
@@ -64,6 +65,8 @@ return (
             colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
           />
         ))}
+          <ListaColaboradores />
+
       </div>
       <Rodape />
     </div>

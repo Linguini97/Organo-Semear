@@ -75,49 +75,31 @@ const Formulario = ({ aoCadastrar, times, niveis }) => {
     useEffect(() => {
         buscarTimes();
     }, []);
-    const aoSubmeter = (evento) => {
-        evento.preventDefault()
-        
-        let dados = {};
-        let url;
 
-        if(opcaoSelecionada  === 'colaborador'){
-            url = 'http://localhost:3001/colaborador';
-            dados = {
-                nome: nome,
-                cargo: cargo,
-                nivel: nivel,
-                imagem: imagem,
-                email: email,
-                pronome: pronome,
-                contato: contato,
-                time: time
-            }
-        }
-        axios.post(url, dados).then((response) => {
-            console.log(response.data);
-            console.log('Dados recebidos com sucesso !');
-            limparFormularioColaborador();
-        })
-        .catch((error) =>{
-            console.error('Erro ao enviar dados: ', error);
-        });
+    const aoCadastrarColaborador = (nome, cargo, nivel, imagem, email, pronome, contato, time ) => {
+        const url ='http://localhost:3001/colaborador';
+        const dados = {
+            nome: nome,
+            cargo: cargo,
+            nivel: nivel,
+            imagem: imagem,
+            email: email,
+            pronome: pronome,
+            contato: contato,
+            time: time
         };
+        axios.post(url, dados).then((response)=>{
+            console.log(response.data);
+            console.log('Colaborador cadastrado com sucesso!')
+        })
+        .catch(error =>{
+            console.log('Erro ao cadastrar colaborador: ', error)
+        });
+    };
 
     const aoSelecionarOpcao = (opcao) =>{
         setOpcaoSelecionada(opcao);
     }
-
-    const limparFormularioColaborador = () => {
-        setNome('');
-        setCargo('');
-        setNivel('');
-        setImagem('');
-        setEmail('');
-        setPronome('');
-        setContato('');
-        setTime('');
-    };
 
     return (
         <section className="formulario-container">
@@ -136,7 +118,18 @@ const Formulario = ({ aoCadastrar, times, niveis }) => {
                 </button>
             </div>
             {opcaoSelecionada === 'colaborador' &&(
-            <form className="formulario" onSubmit={aoSubmeter}>
+            <form className="formulario" onSubmit={(evento) => {
+                evento.preventDefault()
+                aoCadastrarColaborador(nome, cargo, nivel, imagem, email, pronome, contato, time);
+                setNome('');
+                setCargo('');
+                setNivel('');
+                setImagem('');
+                setEmail('');
+                setPronome('');
+                setContato('');
+                setTime('');
+            }}>
                 <h2>Preencha os dados para criar o card do colaborador.</h2>
                 <CampoTexto
                     obrigatorio={true}
