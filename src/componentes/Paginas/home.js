@@ -1,3 +1,5 @@
+import React from "react";
+import axios from 'axios';
 import Banner from "../Banner/Banner"
 import Rodape from "../Rodape"
 import Time from "../Time"
@@ -7,7 +9,7 @@ import ListaColaboradores from "../ListaColaboradores";
 
 
 function Home() {
-
+const [colaboradores , setColaboradores] = useState([]); 
 const [times, setTimes] = useState ([
     {
     id: uuidv4(),
@@ -40,8 +42,19 @@ const [times, setTimes] = useState ([
     corSecundaria: '#FAE9F5',
     }
 ]);
+ 
+const buscaColaboradores = () => {
+  axios
+    .get('http://localhost:3001/colaborador')
+    .then(response => {
+      const colaboradores = response.data;
+      setColaboradores(colaboradores); // Adicione esta linha
+    })
+    .catch(error => {
+      console.log('Erro ao buscar colaboradores: ', error);
+    });
+};
 
-const [colaboradores , setColaboradores] = useState([]);  
 function mudarCorDoTime(cor, nome){
     setTimes(times.map(time => {
     if(time.nome === nome){
